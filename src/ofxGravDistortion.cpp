@@ -18,7 +18,6 @@ void ofxGravDistortion::setup(ofFbo* buf){
 }
 
 void ofxGravDistortion::update(bool mouseFollow){
-	setThinning(ofGetKeyPressed(' '));
 
 	if (mouseFollow){
 		mDis.clearPoint();
