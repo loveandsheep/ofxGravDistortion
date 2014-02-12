@@ -23,6 +23,9 @@ public:
 	void drawMap(int x,int y,int w,int h);
 	void setForce(int frc);
 	void setRadius(float rad);
+
+	void setThinning(bool isThin);
+	void setThinDepth(int num);
 private:
 
 	ofFbo*		buffer;
@@ -34,12 +37,15 @@ private:
 	ofVec2f		buffer_size;
 
 	ofShader	distShader;
+	ofShader	thinShader;
 
 	vector<ofPoint> pts;
 
 	int force;
 	float radius;
 
+	bool thinning;
+	int thinCount;
 };
 
 #endif /* defined(__boidDistort__MapDistort__) */

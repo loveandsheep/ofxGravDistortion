@@ -12,20 +12,21 @@ void ofxGravDistortion::setup(ofFbo* buf){
 	buffer = buf;
 	mDis.setup(buf);
 	bMot.setup(50);
+
+	setThinning(true);
+	setThinDepth(2);
 }
 
-void ofxGravDistortion::update(){
+void ofxGravDistortion::update(bool mouseFollow){
+	setThinning(ofGetKeyPressed(' '));
 
-	bMot.setAttract(ofVec2f(ofGetMouseX(),ofGetMouseY()));
+	if (mouseFollow){
+		mDis.clearPoint();
+		mDis.addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()));
 
-	bMot.update();
-
-	mDis.clearPoint();
-	for (int i = 0;i < bMot.Pts.size();i++){
-		mDis.addPoint(bMot.Pts[i]);
+		mDis.update();
 	}
-	
-	mDis.update();
+
 }
 
 void ofxGravDistortion::setForce(int frc){
@@ -34,4 +35,20 @@ void ofxGravDistortion::setForce(int frc){
 
 void ofxGravDistortion::setRadius(float radius){
 	mDis.setRadius(radius);
+}
+
+void ofxGravDistortion::addPoint(ofVec2f pt){
+	mDis.addPoint(pt);
+}
+
+void ofxGravDistortion::clearPoint(){
+	mDis.clearPoint();
+}
+
+void ofxGravDistortion::setThinning(bool thin){
+	mDis.setThinning(thin);
+}
+
+void ofxGravDistortion::setThinDepth(int num){
+	mDis.setThinDepth(num);
 }

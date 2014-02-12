@@ -18,6 +18,7 @@ void mapDistort::setup(ofFbo *buf){
 	distortionMap.allocate(buffer_size.x, buffer_size.y);
 
 	distShader.load("","shader/convergence.frag");
+	thinShader.load("","shader/thinning.frag");
 
 	/*歪みマップ用のサークル*/
 	Distcircle.allocate(512, 512);
@@ -67,14 +68,14 @@ void mapDistort::update(){
 	for (int i = 0;i < pts.size();i++){
 		Distcircle.draw(pts[i].x-scl/2,pts[i].y-scl/2,scl,scl);
 	}
-	
+
+
 	distortionMap.end();
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofSetColor(255);
 
-
-	/*シェーディング処理*/
+	/*ディストーションシェーディング処理*/
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	distShader.begin();
 	distShader.setUniformTexture("dMap" , distortionMap,1);
@@ -91,10 +92,28 @@ void mapDistort::update(){
 
 
 	/*元のバッファに還元*/
-	buffer->begin();
-	ofClear(0.0, 0.0, 0.0, 255.0);
-	ShadingBuffer.draw(0, 0,buffer_size.x,buffer_size.y);
-	buffer->end();
+
+	int num = MAX(0,thinCount-1)*2+1;//奇数
+	if (!thinning) num = 1;
+
+	for (int i = 0;i < num;i++)
+	{
+		if (i % 2 == 0) buffer->begin();
+		else			ShadingBuffer.begin();
+
+		ofClear(0.0, 0.0, 0.0, 255.0);
+		if (thinning) thinShader.begin();
+		thinShader.setUniformTexture("image", ShadingBuffer, 0);
+		thinShader.setUniform1f("rand", ofRandom(1.0));
+
+		if (i % 2 == 0) ShadingBuffer.draw(0, 0,buffer_size.x,buffer_size.y);
+		else			buffer->draw(0, 0, buffer_size.x, buffer_size.y);
+
+		if (thinning) thinShader.end();
+		if (i % 2 == 0) buffer->end();
+		else			ShadingBuffer.end();
+
+	}
 
 }
 
@@ -117,4 +136,12 @@ void mapDistort::setForce(int frc){
 
 void mapDistort::setRadius(float rad){
 	radius = rad;
+}
+
+void mapDistort::setThinning(bool isThin){
+	thinning = isThin;
+}
+
+void mapDistort::setThinDepth(int num){
+	thinCount = num;
 }
