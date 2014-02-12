@@ -12,9 +12,14 @@ void main (void)
 
     vec4 col = texture2DRect(image,dPos);
 
-	if ((texture2DRect(dMap,texCoord).r > 0.9)&&
-		(texture2DRect(dMap,texCoord).g > 0.9)){
-		col.rgb = vec3(0.0,0.0,0.0);
+//	if (abs(texture2DRect(dMap,texCoord).r - 0.5) > 0.01 &&
+//		abs(texture2DRect(dMap,texCoord).g - 0.5) > 0.01){
+//		col.rgb = vec3(0.0,0.0,0.0);
+//	}
+	if (col.r > 0.5 &&
+		col.g > 0.5 &&
+		col.b > 0.5){
+		col.rgb = vec3(1.0,1.0,1.0);
 	}
 
     gl_FragColor.rgba = col.rgba;
