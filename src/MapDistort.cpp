@@ -11,6 +11,7 @@
 void mapDistort::setup(ofFbo *buf){
 	buffer = buf;
 	force = 255;
+	radius = 1.0;
 
 	buffer_size.set(buf->getWidth(), buf->getHeight());
 	ShadingBuffer.allocate(buffer_size.x, buffer_size.y);
@@ -28,7 +29,7 @@ void mapDistort::setup(ofFbo *buf){
 		for (int j = -256;j < 256;j++){
 			ofPoint dst = ofPoint(-i,-j);
 
-			dst *= MIN(1.0,128.0 / ofPoint(-i,-j).length());
+			dst *= 128.0 / ofPoint(-i,-j).length();
 
 			ofSetColor(dst.x+128, dst.y+128, 0,
 					   255.0 - ofPoint(-i,-j).length());
@@ -49,9 +50,8 @@ void mapDistort::setup(ofFbo *buf){
 //	ofPixels pix;
 //	pix.allocate(512, 512, 4);
 //	Distcircle.readToPixels(pix);
-//	ofImage img;
-//	img.setFromPixels(pix);
-//	img.saveImage("map.png");
+//	ofSaveImage(pix, "map.png");
+
 }
 
 void mapDistort::update(){
@@ -60,9 +60,10 @@ void mapDistort::update(){
 	ofClear(127, 127, 0,255);
 
 	glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_SRC_ALPHA,GL_ONE);
+//	ofEnableBlendMode(OF_BLENDMODE_ADD);
 
 	ofSetColor(255,force);
-	int scl = 512;
+	int scl = 512*radius;
 	for (int i = 0;i < pts.size();i++){
 		Distcircle.draw(pts[i].x-scl/2,pts[i].y-scl/2,scl,scl);
 	}
@@ -112,4 +113,8 @@ void mapDistort::drawMap(int x,int y,int w,int h){
 
 void mapDistort::setForce(int frc){
 	force = frc;
+}
+
+void mapDistort::setRadius(float rad){
+	radius = rad;
 }

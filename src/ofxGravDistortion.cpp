@@ -31,3 +31,7 @@ void ofxGravDistortion::update(){
 void ofxGravDistortion::setForce(int frc){
 	mDis.setForce(frc);
 }
+
+void ofxGravDistortion::setRadius(float radius){
+	mDis.setRadius(radius);
+}

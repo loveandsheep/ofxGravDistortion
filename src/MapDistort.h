@@ -22,6 +22,7 @@ public:
 
 	void drawMap(int x,int y,int w,int h);
 	void setForce(int frc);
+	void setRadius(float rad);
 private:
 
 	ofFbo*		buffer;
@@ -37,6 +38,7 @@ private:
 	vector<ofPoint> pts;
 
 	int force;
+	float radius;
 
 };
 

@@ -22,8 +22,11 @@ public:
 	/*更新処理。Fboの描画処理を終えた後に呼び出してください*/
 	void update();
 
-	/*歪みのかかり具合を調整します。0-255の範囲で設定できます。*/
+	/*歪みのかかり具合を調整します。0-255の範囲で設定できます*/
 	void setForce(int frc);
+
+	/*歪みの半径を設定します1.0fがデフォルトのサイズ*/
+	void setRadius(float radius);
 
 private:
 	ofFbo* buffer;
