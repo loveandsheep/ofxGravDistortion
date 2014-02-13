@@ -26,6 +26,8 @@ public:
 
 	void setThinning(bool isThin);
 	void setThinDepth(int num);
+
+	void setDirection(float direction_);
 private:
 
 	ofFbo*		buffer;
@@ -43,6 +45,7 @@ private:
 
 	int force;
 	float radius;
+	float direction;//1.0f ~ -1.0f
 
 	bool thinning;
 	int thinCount;

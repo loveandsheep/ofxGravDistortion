@@ -30,7 +30,7 @@ void mapDistort::setup(ofFbo *buf){
 		for (int j = -256;j < 256;j++){
 			ofPoint dst = ofPoint(-i,-j);
 
-			dst *= 128.0 / ofPoint(-i,-j).length();
+			dst *= MIN(1.0,128.0 / ofPoint(-i,-j).length());
 
 			ofSetColor(dst.x+128, dst.y+128, 0,
 					   255.0 - ofPoint(-i,-j).length());
@@ -80,6 +80,7 @@ void mapDistort::update(){
 	distShader.begin();
 	distShader.setUniformTexture("dMap" , distortionMap,1);
 	distShader.setUniformTexture("image", *buffer, 0);
+	distShader.setUniform1f		("direction", direction);
 	distShader.setUniform1f		("rand"	, ofGetMouseX()/(float)ofGetWidth());
 
 	ShadingBuffer.begin();
@@ -144,4 +145,8 @@ void mapDistort::setThinning(bool isThin){
 
 void mapDistort::setThinDepth(int num){
 	thinCount = num;
+}
+
+void mapDistort::setDirection(float direction_){
+	direction = direction_;
 }
