@@ -19,16 +19,13 @@ void ofxGravDistortion::setup(ofFbo* buf){
 
 void ofxGravDistortion::update(bool mouseFollow){
 
-	setRadius(1.0);
 	if (mouseFollow){
-		
+		setRadius(1.0);
 		mDis.clearPoint();
 		mDis.addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()));
-
 		setDirection(sin(ofGetElapsedTimef()*3.0)*0.98);
-		mDis.update();
-
 	}
+	mDis.update();
 
 }
 
