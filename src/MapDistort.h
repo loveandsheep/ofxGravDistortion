@@ -10,6 +10,7 @@
 #define __boidDistort__MapDistort__
 
 #include "ofMain.h"
+#define MAP_RESO 512
 
 class mapDistort{
 public:
@@ -18,6 +19,8 @@ public:
 	void update();
 
 	void addPoint(ofPoint pt);
+	void addPoint(ofPoint pt,float radius_,float force_);
+
 	void clearPoint();
 
 	void drawMap(int x,int y,int w,int h);
@@ -42,6 +45,8 @@ private:
 	ofShader	thinShader;
 
 	vector<ofPoint> pts;
+	vector<float> rads;
+	vector<float> forces;
 
 	int force;
 	float radius;

@@ -61,11 +61,10 @@ void mapDistort::update(){
 	ofClear(127, 127, 0,255);
 
 	glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_SRC_ALPHA,GL_ONE);
-//	ofEnableBlendMode(OF_BLENDMODE_ADD);
 
-	ofSetColor(255,force);
-	int scl = 512*radius;
 	for (int i = 0;i < pts.size();i++){
+		ofSetColor(255,forces[i]);
+		int scl = 512*rads[i];
 		Distcircle.draw(pts[i].x-scl/2,pts[i].y-scl/2,scl,scl);
 	}
 
@@ -120,11 +119,30 @@ void mapDistort::update(){
 
 void mapDistort::addPoint(ofPoint pt){
 	ofPoint p = pt;
+	float rd = radius;
+	float fc = force;
+
 	pts.push_back(p);
+	rads.push_back(rd);
+	forces.push_back(fc);
+
+}
+
+void mapDistort::addPoint(ofPoint pt,float radius_,float force_){
+	ofPoint p = pt;
+	float rd = radius_;
+	float fc = force_;
+
+	pts.push_back(p);
+	rads.push_back(rd);
+	forces.push_back(fc);
+
 }
 
 void mapDistort::clearPoint(){
 	pts.clear();
+	rads.clear();
+	forces.clear();
 }
 
 void mapDistort::drawMap(int x,int y,int w,int h){

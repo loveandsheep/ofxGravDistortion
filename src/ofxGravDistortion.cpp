@@ -56,3 +56,7 @@ void ofxGravDistortion::setThinDepth(int num){
 void ofxGravDistortion::setDirection(float dir){
 	mDis.setDirection(dir);
 }
+
+void ofxGravDistortion::addPoint(ofVec2f pt, float rad, float force){
+	mDis.addPoint(pt, rad, force);
+}
