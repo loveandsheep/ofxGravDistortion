@@ -15,6 +15,7 @@ void ofxGravDistortion::setup(ofFbo* buf){
 
 	setThinning(false);
 	setThinDepth(2);
+	setDirection(1.0);
 }
 
 void ofxGravDistortion::update(bool mouseFollow){
@@ -22,8 +23,15 @@ void ofxGravDistortion::update(bool mouseFollow){
 	if (mouseFollow){
 		setRadius(1.0);
 		mDis.clearPoint();
-		mDis.addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()));
-		setDirection(sin(ofGetElapsedTimef()*3.0)*0.98);
+		mDis.addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()),
+					  sin(ofGetElapsedTimef())*3.0+3.0,
+					  255,false);
+
+		mDis.addPoint(ofVec2f(ofGetWidth()  - ofGetMouseX(),
+							  ofGetHeight() - ofGetMouseY()),
+					  sin(ofGetElapsedTimef())*3.0+3.0,
+					  255,true);
+//		setDirection(sin(ofGetElapsedTimef()*3.0)*0.98);
 	}
 	mDis.update();
 
@@ -57,6 +65,6 @@ void ofxGravDistortion::setDirection(float dir){
 	mDis.setDirection(dir);
 }
 
-void ofxGravDistortion::addPoint(ofVec2f pt, float rad, float force){
-	mDis.addPoint(pt, rad, force);
+void ofxGravDistortion::addPoint(ofVec2f pt, float rad, float force,bool invert){
+	mDis.addPoint(pt, rad, force,invert);
 }

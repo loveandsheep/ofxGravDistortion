@@ -38,7 +38,7 @@ public:
 	void addPoint(ofVec2f pt);
 
 	/*新規に座標・直径・力を追加します*/
-	void addPoint(ofVec2f pt,float rad,float force);
+	void addPoint(ofVec2f pt,float rad,float force,bool invert);
 
 	/*ポイントをリセットします*/
 	void clearPoint();

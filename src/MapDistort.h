@@ -10,7 +10,7 @@
 #define __boidDistort__MapDistort__
 
 #include "ofMain.h"
-#define MAP_RESO 512
+#define MAP_RESO 512.0
 
 class mapDistort{
 public:
@@ -19,7 +19,7 @@ public:
 	void update();
 
 	void addPoint(ofPoint pt);
-	void addPoint(ofPoint pt,float radius_,float force_);
+	void addPoint(ofPoint pt,float radius_,float force_,bool invert_);
 
 	void clearPoint();
 
@@ -33,11 +33,14 @@ public:
 	void setDirection(float direction_);
 private:
 
+	void genDistMap(bool usePng);
+
 	ofFbo*		buffer;
 	ofFbo		ShadingBuffer;
 	ofFbo		distortionMap;
 
 	ofFbo		Distcircle;
+	ofFbo		DistcircleInv;
 
 	ofVec2f		buffer_size;
 
@@ -47,6 +50,7 @@ private:
 	vector<ofPoint> pts;
 	vector<float> rads;
 	vector<float> forces;
+	vector<bool> isInvert;
 
 	int force;
 	float radius;
