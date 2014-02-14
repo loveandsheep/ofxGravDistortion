@@ -24,18 +24,18 @@ void mapDistort::setup(ofFbo *buf){
 	/*歪みマップ用のサークル*/
 	Distcircle.allocate		(MAP_RESO, MAP_RESO);
 	DistcircleInv.allocate	(MAP_RESO, MAP_RESO);
-	genDistMap(false);
+	genDistMap(true);
 
 
-	ofPixels pix;
-	pix.allocate(512, 512, 4);
-	Distcircle.readToPixels(pix);
-	ofSaveImage(pix, "map.png");
-
-	ofPixels pixI;
-	pixI.allocate(512, 512, 4);
-	DistcircleInv.readToPixels(pixI);
-	ofSaveImage(pixI, "map_inv.png");
+//	ofPixels pix;
+//	pix.allocate(512, 512, 4);
+//	Distcircle.readToPixels(pix);
+//	ofSaveImage(pix, "map.png");
+//
+//	ofPixels pixI;
+//	pixI.allocate(512, 512, 4);
+//	DistcircleInv.readToPixels(pixI);
+//	ofSaveImage(pixI, "map_inv.png");
 }
 
 void mapDistort::update(){
@@ -66,7 +66,7 @@ void mapDistort::update(){
 	distShader.setUniformTexture("image", *buffer, 0);
 	distShader.setUniform1f		("direction", 1.0);
 	distShader.setUniform1f		("rand"	, ofGetMouseX()/(float)ofGetWidth());
-	distShader.setUniform1f		("radius", 255.0);
+	distShader.setUniform1f		("radius", 255);
 
 	ShadingBuffer.begin();
 	ofDisableAntiAliasing();
@@ -173,7 +173,7 @@ void mapDistort::genDistMap(bool usePng){
 		ofImage im;
 		ofSetColor(255);
 		im.loadImage("image/map.png");
-		im.draw(0,0, 512, 512);
+		im.draw(0,0, MAP_RESO, MAP_RESO);
 
 	}else{
 
@@ -182,11 +182,20 @@ void mapDistort::genDistMap(bool usePng){
 			for (int j = -MAP_RESO/2;j < MAP_RESO/2;j++){
 				ofPoint dst = ofPoint(-i,-j);
 
-//				dst *= MIN(1.0,(MAP_RESO / 4.0) / ofPoint(-i,-j).length());
+				dst *= 128 / ofPoint(-i,-j).length();
+//				bool flg = false;
+//				if (abs(dst.x) > abs(i)){
+//					dst.x = i;
+//					flg = true;
+//				}
+//				if (abs(dst.y) > abs(j)){
+//					dst.y = j;
+//					flg = true;
+//				}
 
 				ofSetColor(dst.x * (512.0 / MAP_RESO) + 128,
 						   dst.y * (512.0 / MAP_RESO) + 128, 0,
-						   255 - ofPoint(-i,-j).length());
+						   255 - (ofPoint(-i,-j).length()));
 
 				glVertex2f(i+MAP_RESO/2, j+MAP_RESO/2);
 			}
@@ -208,7 +217,7 @@ void mapDistort::genDistMap(bool usePng){
 		ofImage im;
 		ofSetColor(255);
 		im.loadImage("image/map_inv.png");
-		im.draw(0,0, 512, 512);
+		im.draw(0,0, MAP_RESO, MAP_RESO);
 
 	}else{
 
@@ -217,7 +226,7 @@ void mapDistort::genDistMap(bool usePng){
 			for (int j = -MAP_RESO/2;j < MAP_RESO/2;j++){
 				ofPoint dst = ofPoint(-i,-j);
 
-//				dst *= MIN(1.0,(MAP_RESO / 4.0) / ofPoint(-i,-j).length());
+				dst *= 128 / ofPoint(-i,-j).length();
 
 				ofSetColor(-dst.x * (512.0 / MAP_RESO) + 128,
 						   -dst.y * (512.0 / MAP_RESO) + 128, 0,
