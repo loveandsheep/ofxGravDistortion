@@ -66,7 +66,7 @@ void mapDistort::update(){
 	distShader.setUniformTexture("image", *buffer, 0);
 	distShader.setUniform1f		("direction", 1.0);
 	distShader.setUniform1f		("rand"	, ofGetMouseX()/(float)ofGetWidth());
-	distShader.setUniform1f		("radius", 255);
+	distShader.setUniform1f		("radius", 255.0);
 
 	ShadingBuffer.begin();
 	ofDisableAntiAliasing();
@@ -88,14 +88,14 @@ void mapDistort::update(){
 		else			ShadingBuffer.begin();
 
 		ofClear(0.0, 0.0, 0.0, 255.0);
-//		if (thinning) thinShader.begin();
-//		thinShader.setUniformTexture("image", ShadingBuffer, 0);
-//		thinShader.setUniform1f("rand", ofRandom(1.0));
+		if (thinning) thinShader.begin();
+		thinShader.setUniformTexture("image", ShadingBuffer, 0);
+		thinShader.setUniform1f("rand", ofRandom(1.0));
 
 		if (i % 2 == 0) ShadingBuffer.draw(0, 0,buffer_size.x,buffer_size.y);
 		else			buffer->draw(0, 0, buffer_size.x, buffer_size.y);
 
-//		if (thinning) thinShader.end();
+		if (thinning) thinShader.end();
 		if (i % 2 == 0) buffer->end();
 		else			ShadingBuffer.end();
 
@@ -183,15 +183,6 @@ void mapDistort::genDistMap(bool usePng){
 				ofPoint dst = ofPoint(-i,-j);
 
 				dst *= 128 / ofPoint(-i,-j).length();
-//				bool flg = false;
-//				if (abs(dst.x) > abs(i)){
-//					dst.x = i;
-//					flg = true;
-//				}
-//				if (abs(dst.y) > abs(j)){
-//					dst.y = j;
-//					flg = true;
-//				}
 
 				ofSetColor(dst.x * (512.0 / MAP_RESO) + 128,
 						   dst.y * (512.0 / MAP_RESO) + 128, 0,
