@@ -12,6 +12,7 @@
 #include "ofMain.h"
 #include "MapDistort.h"
 #include "boidMotioner.h"
+#include "MeshDistort.h"
 
 class ofxGravDistortion{
 public:
@@ -51,7 +52,9 @@ public:
 	void setThinDepth(int num);
 
 
+	MeshDistort meshDis;
 private:
+	bool enableMeshDist;
 	ofFbo* buffer;
 	mapDistort mDis;
 	boidMotioner bMot;

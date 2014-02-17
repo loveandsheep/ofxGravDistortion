@@ -16,23 +16,33 @@ void ofxGravDistortion::setup(ofFbo* buf){
 	setThinning(false);
 	setThinDepth(2);
 	setDirection(1.0);
+
+	meshDis.setup(buf);
+
+	enableMeshDist = true;
 }
 
 void ofxGravDistortion::update(bool mouseFollow){
 
 	if (mouseFollow){
 		setRadius(1.0);
-		mDis.clearPoint();
-		mDis.addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()),
-					  1.0,
-					  255,false);
 
-		mDis.addPoint(ofVec2f(ofGetWidth()  - ofGetMouseX(),
-							  ofGetHeight() - ofGetMouseY()),
-					  1.0,
-					  255,true);
+		clearPoint();
+		addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()),
+				 sin(ofGetElapsedTimef()/1.4)*200.0+200.0,
+				 sin(ofGetElapsedTimef())*1.0+1.0, false);
+
+		addPoint(ofVec2f(ofGetWidth()  - ofGetMouseX(),
+						 ofGetHeight() - ofGetMouseY()),
+				 sin(ofGetElapsedTimef()/1.4)*200.0+200.0,
+				 sin(ofGetElapsedTimef())*1.0+1.0, true);
 	}
-	mDis.update();
+
+	if (enableMeshDist){
+		meshDis.update();
+	}else{
+		mDis.update();
+	}
 
 }
 
@@ -49,7 +59,11 @@ void ofxGravDistortion::addPoint(ofVec2f pt){
 }
 
 void ofxGravDistortion::clearPoint(){
-	mDis.clearPoint();
+	if (enableMeshDist){
+		meshDis.clearPoint();
+	}else{
+		mDis.clearPoint();
+	}
 }
 
 void ofxGravDistortion::setThinning(bool thin){
@@ -65,5 +79,9 @@ void ofxGravDistortion::setDirection(float dir){
 }
 
 void ofxGravDistortion::addPoint(ofVec2f pt, float rad, float force,bool invert){
-	mDis.addPoint(pt, rad, force,invert);
+	if (enableMeshDist){
+		meshDis.addPoint(pt, rad, force, invert);
+	}else{
+		mDis.addPoint(pt, rad, force,invert);
+	}
 }
