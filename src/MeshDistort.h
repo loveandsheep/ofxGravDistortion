@@ -39,7 +39,7 @@ protected:
 	ofFbo* buf;
 	ofFbo backBuffer;
 
-	static const int slice = 4;
+	static const int slice = 2;
 };
 
 #endif /* defined(__boidDistort__MeshDistort__) */

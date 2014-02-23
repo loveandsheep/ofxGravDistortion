@@ -22,17 +22,27 @@ void MeshDistort::setup(ofFbo* buffer){
 	int w_count = buffer->getWidth()/slice+1;
 	int h_count = buffer->getHeight()/slice+1;
 
-	for (int j = 0;j < h_count-1;j++){
-		for (int i = 0;i < w_count-1;i++){
-
+	int stp = 16;
+	for (int j = 0;j < h_count-stp;j+=stp){
+		for (int i = 0;i < w_count-stp;i++){
 			ids.push_back(ofIndexType( j    * w_count + i));
-			ids.push_back(ofIndexType( j    * w_count + i + 1));
-			ids.push_back(ofIndexType((j+1) * w_count + i));
+			ids.push_back(ofIndexType( j    * w_count + i+1));
 
-			ids.push_back(ofIndexType((j+1) * w_count + i));
-			ids.push_back(ofIndexType( j    * w_count + i + 1));
-			ids.push_back(ofIndexType((j+1) * w_count + i + 1));
+//			ids.push_back(ofIndexType( j    * w_count + i));
+//			ids.push_back(ofIndexType( j    * w_count + i + 1));
+//			ids.push_back(ofIndexType((j+1) * w_count + i));
+//
+//			ids.push_back(ofIndexType((j+1) * w_count + i));
+//			ids.push_back(ofIndexType( j    * w_count + i + 1));
+//			ids.push_back(ofIndexType((j+1) * w_count + i + 1));
 
+		}
+	}
+
+	for (int j = 0;j < h_count-stp;j++){
+		for (int i = 0;i < w_count-stp;i+=stp){
+			ids.push_back(ofIndexType((j+1) * w_count + i));
+			ids.push_back(ofIndexType((j    ) * w_count + i));
 		}
 	}
 
@@ -102,16 +112,16 @@ void MeshDistort::update(){
 	for (int i = 0;i < gravPts.size();i++){
 		if (!gravPts[i].direction){
 			ofFill();
-			ofSetColor(0, 0, 0);
-			ofCircle(gravPts[i].pos,
-					 cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force) +
-					 gravPts[i].force * pow(gravPts[i].radius,2.0f) / pow(cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force),2.0));
-			ofSetColor(255);
+//			ofSetColor(0, 0, 0);
+//			ofCircle(gravPts[i].pos,
+//					 cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force) +
+//					 gravPts[i].force * pow(gravPts[i].radius,2.0f) / pow(cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force),2.0));
+//			ofSetColor(255);
 //			ofNoFill();
-			//			ofCircle(gravPts[i].pos,
-			//					 cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force) +
-			//					 gravPts[i].force * pow(gravPts[i].radius,2.0f) / pow(cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force),2.0));
-//			ofFill();
+//			ofCircle(gravPts[i].pos,
+//					 cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force) +
+//					 gravPts[i].force * pow(gravPts[i].radius,2.0f) / pow(cbrt(2.0*pow(gravPts[i].radius, 2.0f)*gravPts[i].force),2.0));
+			ofFill();
 		}
 	}
 	backBuffer.end();
@@ -123,7 +133,9 @@ void MeshDistort::update(){
 }
 
 void MeshDistort::drawTest(){
-
+	ofDisableAntiAliasing();
+	vbo.drawElements(GL_LINES, ids.size());
+	ofEnableAntiAliasing();
 }
 
 void MeshDistort::clearPoint(){
