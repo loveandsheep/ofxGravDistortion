@@ -45,7 +45,7 @@ ofVec2f MultiMeshDistort::getPoint(ofVec2f pt){
 			ofVec2f vb,vo;
 
 			//歪曲を適用
-			vb = gravPts[j].force * vn * cos((va.length() / gravPts[j].radius) * HALF_PI);
+			vb = gravPts[j].force * vn * pow(cos((va.length() / gravPts[j].radius) * HALF_PI),3.0);
 
 			vo = va + vb;
 
