@@ -21,8 +21,8 @@ void MultiMeshDistort::update(bool mouseFollow){
 
 		addPoint(ofVec2f(ofGetWidth()  - ofGetMouseX(),
 						 ofGetHeight() - ofGetMouseY()),
-				 sin(ofGetElapsedTimef()/1.4)*200.0+200.0,
-				 sin(ofGetElapsedTimef())*1.0+1.0, true);
+				 200.0,
+				 sin(ofGetElapsedTimef())*50.0+50.0, true);
 	}
 }
 
