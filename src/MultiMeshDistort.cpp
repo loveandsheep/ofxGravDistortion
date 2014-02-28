@@ -17,12 +17,12 @@ void MultiMeshDistort::update(bool mouseFollow){
 		clearPoint();
 		addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()),
 				 200.0,
-				 sin(ofGetElapsedTimef())*50.0+50.0, false);
+				 sin(ofGetElapsedTimef())*20.0+20.0, false);
 
 		addPoint(ofVec2f(ofGetWidth()  - ofGetMouseX(),
 						 ofGetHeight() - ofGetMouseY()),
 				 200.0,
-				 sin(ofGetElapsedTimef())*50.0+50.0, true);
+				 sin(ofGetElapsedTimef())*20.0+20.0, true);
 	}
 }
 
@@ -45,7 +45,13 @@ ofVec2f MultiMeshDistort::getPoint(ofVec2f pt){
 			ofVec2f vb,vo;
 
 			//歪曲を適用
-			vb = gravPts[j].force * vn * pow(cos((va.length() / gravPts[j].radius) * HALF_PI),3.0);
+			float dst = va.length() / gravPts[j].radius;//0.0 ~ 1.0
+			if (dst < 0.5){
+				vb = gravPts[j].force * vn * pow(sin(dst * PI),1.0);
+			}else{
+				vb = gravPts[j].force * vn * pow(sin(dst * PI),3.0);
+			}
+
 
 			vo = va + vb;
 
