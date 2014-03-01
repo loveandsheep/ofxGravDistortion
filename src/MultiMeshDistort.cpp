@@ -15,14 +15,15 @@ void MultiMeshDistort::setup(){
 void MultiMeshDistort::update(bool mouseFollow){
 	if (mouseFollow){
 		clearPoint();
+		float force_m = 20.0;
 		addPoint(ofVec2f(ofGetMouseX(),ofGetMouseY()),
 				 200.0,
-				 sin(ofGetElapsedTimef())*20.0+20.0, false);
+				 sin(ofGetElapsedTimef())*force_m+force_m, false);
 
 		addPoint(ofVec2f(ofGetWidth()  - ofGetMouseX(),
 						 ofGetHeight() - ofGetMouseY()),
 				 200.0,
-				 sin(ofGetElapsedTimef())*20.0+20.0, true);
+				 sin(ofGetElapsedTimef())*force_m+force_m, false);
 	}
 }
 
@@ -63,7 +64,7 @@ ofVec2f MultiMeshDistort::getPoint(ofVec2f pt){
 				vv.limit(v.length());
 				mov -= vv;
 			}else{
-				mov = vo + gravPts[j].pos;
+				mov += vo - v;
 			}
 		}
 	}
